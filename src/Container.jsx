@@ -1,10 +1,14 @@
 import { Outlet } from "react-router-dom";
+import Navbar from "./components/Navbar";
 
 const Container = () => {
   return (
-    <>
-      <Outlet />
-    </>
+    <div className="relative">
+      <Navbar />
+      <div className="bg-white">
+        <Outlet />
+      </div>
+    </div>
   );
 };
 

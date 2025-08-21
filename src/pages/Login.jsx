@@ -1,5 +1,125 @@
+import { useState } from "react";
+import LightRays from "../components/LightRays";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import InputAdornment from "@mui/material/InputAdornment";
+import EmailIcon from "@mui/icons-material/Email";
+import LockIcon from "@mui/icons-material/Lock";
+
 const Login = () => {
-  return <div>Login</div>;
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Login submitted:", { email, password });
+    // 🔑 Handle authentication here
+  };
+
+  return (
+    <div className="relative w-full min-h-screen overflow-hidden">
+      {/* Background light rays */}
+      <LightRays
+        raysOrigin="top-right"
+        raysColor="#fafafa"
+        raysSpeed={1.5}
+        lightSpread={0.8}
+        rayLength={1.2}
+        followMouse={true}
+        mouseInfluence={0.1}
+        noiseAmount={0.1}
+        distortion={0.05}
+        className="custom-rays"
+      />
+
+      {/* Login card */}
+      <div className="absolute top-0 left-0 w-full h-screen flex md:flex-row flex-col md:items-center md:justify-center gap-2">
+        {/* Left side image */}
+        <div className="w-full md:w-2/5 h-60 md:h-full rounded-r-lg overflow-hidden">
+          <img
+            src="https://images.unsplash.com/photo-1553034545-32d4cd2168f1?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0"
+            alt="Expense Tracker Login"
+            className="w-full h-full object-cover"
+          />
+        </div>
+
+        {/* Right side form */}
+        <div className="w-full h-full md:h-fit md:w-3/5 flex items-center justify-center">
+          <div className="w-full md:w-120 bg-white/10 backdrop-blur-lg rounded-2xl md:shadow-2xl p-8 border border-white/20">
+            <div className="h-10 w-full flex items-center justify-center overflow-hidden gap-2 mb-4">
+              <img
+                src="./logo.png"
+                alt="Expense Tracker Logo"
+                className="h-full object-contain"
+              />
+              <h2 className="text-2xl font-bold text-gray-800 text-center">
+                Expense Tracker
+              </h2>
+            </div>
+            <p className="text-gray-700 text-center mb-8">
+              Welcome back! Please sign in to continue.
+            </p>
+
+            <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+              {/* Email with icon */}
+              <TextField
+                fullWidth
+                label="Email Address"
+                type="email"
+                variant="outlined"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                placeholder="Enter your email address"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <EmailIcon color="action" />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+
+              {/* Password with icon */}
+              <TextField
+                fullWidth
+                label="Password"
+                type="password"
+                variant="outlined"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                placeholder="Enter your password"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <LockIcon color="action" />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+
+              {/* Login button */}
+              <button
+                type="submit"
+                className="w-full bg-blue-600 hover:bg-blue-700 transition-all text-white py-2 rounded-lg font-medium shadow-lg"
+              >
+                {" "}
+                Login{" "}
+              </button>
+            </form>
+
+            <p className="text-gray-500 text-sm text-center mt-6">
+              Don’t have an account?{" "}
+              <a href="/register" className="text-blue-500 hover:underline">
+                Sign up
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default Login;
