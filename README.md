@@ -1,12 +1,34 @@
-# React + Vite
+# Expense Tracker (React + Vite + Supabase)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is an **Expense Tracker web application** built with **React (Vite)** and powered by **Supabase** for authentication and backend services.  
+It is deployed under the subdomain: [https://et.paulndalila.top](https://et.paulndalila.top)
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+- 🔐 Authentication with **Supabase Auth** (Email/Password + Google OAuth)
+- 📊 Track and manage personal expenses
+- 🌐 Hosted at [et.paulndalila.top](https://et.paulndalila.top)
+- ⚡ Built with **React + Vite** for fast and modern frontend development
+- 🎨 Styled with **TailwindCSS** and Material UI components
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## Tech Stack
+
+- **Frontend:** React + Vite
+- **Backend/Auth:** Supabase
+- **Styling:** TailwindCSS + Material UI
+- **Deployment:** Vercel / Render
+
+---
+
+## Development Setup
+
+Clone the repo:
+
+```bash
+git clone https://github.com/yourusername/expense-tracker.git
+cd expense-tracker
+```
