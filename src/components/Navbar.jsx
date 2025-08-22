@@ -14,7 +14,7 @@ const Navbar = () => {
           onClick={() => {
             logout();
           }}
-          className="flex items-center gap-1 px-3 py-2 text-xs md:text-sm text-gray-700  transition-colors duration-200"
+          className="flex items-center gap-1 px-3 py-2 text-xs md:text-sm text-gray-700  transition-colors duration-200 cursor-pointer"
         >
           <LogoutIcon fontSize="small" />
           Logout
