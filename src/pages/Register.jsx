@@ -6,16 +6,26 @@ import LightRays from "../components/LightRays";
 import LockIcon from "@mui/icons-material/Lock";
 import TextField from "@mui/material/TextField";
 import EmailIcon from "@mui/icons-material/Email";
+import GoogleIcon from "@mui/icons-material/Google";
 import InputAdornment from "@mui/material/InputAdornment";
 import CircularProgress from "@mui/material/CircularProgress";
 
 const Register = () => {
-  const { register } = useAuth();
+  const { register, loginWithGoogle } = useAuth();
   const [err, setErr] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const handleGoogleLogin = async () => {
+    try {
+      await loginWithGoogle();
+      //Note to self:- No need for redirect here since Supabase will handle it
+    } catch (err) {
+      setErr(err.message);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -68,7 +78,7 @@ const Register = () => {
 
         {/* Right side form */}
         <div className="w-full h-full md:h-fit md:w-3/5 flex items-center justify-center">
-          <div className="w-full md:w-120 bg-white/10 backdrop-blur-lg rounded-2xl md:shadow-2xl p-8 border border-white/20">
+          <div className="w-full md:w-120 bg-white/50 backdrop-blur-lg rounded-2xl md:shadow-2xl p-8 border border-white/20">
             <div className="h-10 w-full flex items-center justify-center overflow-hidden gap-2 mb-4">
               <img
                 src="./logo.png"
@@ -164,6 +174,16 @@ const Register = () => {
                 ) : (
                   <span>Register</span>
                 )}
+              </button>
+              <p className="text-center text-xs text-gray-700">- OR -</p>
+              {/* Google login */}
+              <button
+                type="button"
+                onClick={handleGoogleLogin}
+                className="w-full flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg font-medium shadow-lg text-xs cursor-pointer"
+              >
+                <GoogleIcon />
+                Continue with Google
               </button>
             </form>
 

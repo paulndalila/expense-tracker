@@ -9,12 +9,12 @@ const Navbar = () => {
         <img src="./logo.png" className="h-full object-cover" />
         <h1 className="text-sm text-gray-800">Expense Tracker.</h1>
       </div>
-      <div className="flex px-2 gap-4 *:px-1 *:my-1 *:text-gray-800 *:text-sm *:hover:border-b-2 *:hover:border-gray-700 duration-150">
+      <div className="flex px-2 gap-4 *:px-1 *:my-1 *:text-gray-800 *:text-sm *:hover:border-b-2 *:hover:border-gray-700 duration-150 select-none">
         <a
           onClick={() => {
             logout();
           }}
-          className="flex items-center gap-1 px-3 py-2 text-xs md:text-sm text-gray-700  transition-colors duration-200 cursor-pointer"
+          className="flex items-center gap-1 px-3 py-2 text-xs md:text-sm text-gray-700  transition-colors duration-200 cursor-pointer select-none"
         >
           <LogoutIcon fontSize="small" />
           Logout
