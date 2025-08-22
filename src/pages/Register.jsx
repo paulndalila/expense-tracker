@@ -1,31 +1,40 @@
 import { useState } from "react";
 import Alert from "@mui/material/Alert";
+import { Navigate } from "react-router-dom";
 import { useAuth } from "../auth/auth-context";
 import LightRays from "../components/LightRays";
-import TextField from "@mui/material/TextField";
 import LockIcon from "@mui/icons-material/Lock";
+import TextField from "@mui/material/TextField";
 import EmailIcon from "@mui/icons-material/Email";
 import InputAdornment from "@mui/material/InputAdornment";
 import CircularProgress from "@mui/material/CircularProgress";
 
-const Login = () => {
-  const { login } = useAuth();
+const Register = () => {
+  const { register } = useAuth();
   const [err, setErr] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
+    if (password !== confirmPassword) {
+      setErr("Passwords do not match!");
+      setLoading(false);
+      return;
+    }
+
     try {
-      await login(email, password);
-      window.location.href = "/";
+      await register(email, password);
+      Navigate("/mail");
     } catch (error) {
-      console.error("Login error:", error.message);
-      setErr(error.message); // show error in UI
+      console.error("Registration error:", error.message);
+      setErr(error.message);
     } finally {
+      setErr(null);
       setLoading(false);
     }
   };
@@ -46,12 +55,12 @@ const Login = () => {
         className="custom-rays"
       />
 
-      {/* Login card */}
+      {/* Registration card */}
       <div className="absolute top-0 left-0 w-full h-screen flex md:flex-row flex-col md:items-center md:justify-center gap-2">
         {/* Left side image */}
         <div className="w-full md:w-2/5 h-60 md:h-full rounded-r-lg overflow-hidden">
           <img
-            src="https://images.unsplash.com/photo-1553034545-32d4cd2168f1?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0"
+            src="https://images.unsplash.com/photo-1709534486708-fb8f94150d0a?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             alt="Expense Tracker Login"
             className="w-full h-full object-cover"
           />
@@ -70,9 +79,7 @@ const Login = () => {
                 Expense Tracker
               </h2>
             </div>
-            <p className="text-gray-700 text-center mb-8">
-              Welcome back! Please sign in to continue.
-            </p>
+            <p className="text-gray-700 text-center mb-6">Registration Form</p>
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-5">
               {err && (
@@ -85,6 +92,7 @@ const Login = () => {
                   {err}
                 </Alert>
               )}
+
               {/* Email with icon */}
               <TextField
                 fullWidth
@@ -123,7 +131,26 @@ const Login = () => {
                 }}
               />
 
-              {/* Login button */}
+              {/* Confirm Password with icon */}
+              <TextField
+                fullWidth
+                label="Confirm Password"
+                type="password"
+                variant="outlined"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+                placeholder="Confirm your password"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <LockIcon color="action" />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+
+              {/* Register button */}
               <button
                 type="submit"
                 className="w-full bg-blue-600 hover:bg-blue-700 transition-all text-white py-2 rounded-lg font-medium shadow-lg cursor-pointer"
@@ -135,15 +162,15 @@ const Login = () => {
                     sx={{ color: "white" }}
                   />
                 ) : (
-                  <span>Login</span>
+                  <span>Register</span>
                 )}
               </button>
             </form>
 
             <p className="text-gray-500 text-sm text-center mt-6">
-              Don’t have an account?{" "}
-              <a href="/register" className="text-blue-500 hover:underline">
-                Sign up
+              Have an account?{" "}
+              <a href="/login" className="text-blue-500 hover:underline">
+                Sign in
               </a>
             </p>
           </div>
@@ -153,4 +180,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
