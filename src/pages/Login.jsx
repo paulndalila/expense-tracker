@@ -9,6 +9,8 @@ import GoogleIcon from "@mui/icons-material/Google";
 import InputAdornment from "@mui/material/InputAdornment";
 import CircularProgress from "@mui/material/CircularProgress";
 
+import { Helmet } from "react-helmet";
+
 const Login = () => {
   const { login, loginWithGoogle } = useAuth();
   const [err, setErr] = useState(null);
@@ -42,6 +44,41 @@ const Login = () => {
 
   return (
     <div className="relative w-full min-h-screen overflow-hidden">
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Login | Expense Tracker</title>
+        <meta
+          name="description"
+          content="Securely log in to your Expense Tracker account to manage your finances, track spending, and analyze your budget."
+        />
+        <link rel="canonical" href="https://et.paulndalila.top/login" />
+
+        {/* Open Graph / Social Preview */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://et.paulndalila.top/login" />
+        <meta property="og:title" content="Login | Expense Tracker" />
+        <meta
+          property="og:description"
+          content="Sign in to Expense Tracker to continue managing your personal finances."
+        />
+        <meta
+          property="og:image"
+          content="https://et.paulndalila.top/banner.png"
+        />
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Login | Expense Tracker" />
+        <meta
+          name="twitter:description"
+          content="Sign in to Expense Tracker to continue managing your personal finances."
+        />
+        <meta
+          name="twitter:image"
+          content="https://et.paulndalila.top/banner.png"
+        />
+      </Helmet>
+
       {/* Background light rays */}
       <LightRays
         raysOrigin="top-right"

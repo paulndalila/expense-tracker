@@ -10,6 +10,8 @@ import GoogleIcon from "@mui/icons-material/Google";
 import InputAdornment from "@mui/material/InputAdornment";
 import CircularProgress from "@mui/material/CircularProgress";
 
+import { Helmet } from "react-helmet";
+
 const Register = () => {
   const { register, loginWithGoogle } = useAuth();
   const [err, setErr] = useState(null);
@@ -51,6 +53,41 @@ const Register = () => {
 
   return (
     <div className="relative w-full min-h-screen overflow-hidden">
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Sign Up | Expense Tracker</title>
+        <meta
+          name="description"
+          content="Create your Expense Tracker account to securely manage expenses, incomes, loans, and budgets all in one place."
+        />
+        <link rel="canonical" href="https://et.paulndalila.top/register" />
+
+        {/* Open Graph / Social Preview */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://et.paulndalila.top/register" />
+        <meta property="og:title" content="Register | Expense Tracker" />
+        <meta
+          property="og:description"
+          content="Sign up for Expense Tracker and take control of your finances today."
+        />
+        <meta
+          property="og:image"
+          content="https://et.paulndalila.top/banner.png"
+        />
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Register | Expense Tracker" />
+        <meta
+          name="twitter:description"
+          content="Sign up for Expense Tracker and take control of your finances today."
+        />
+        <meta
+          name="twitter:image"
+          content="https://et.paulndalila.top/banner.png"
+        />
+      </Helmet>
+
       {/* Background light rays */}
       <LightRays
         raysOrigin="top-right"
