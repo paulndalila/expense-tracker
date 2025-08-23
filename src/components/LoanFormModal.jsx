@@ -25,10 +25,10 @@ const LoanFormModal = ({ onClose }) => {
     const { error } = await supabase.from("transactions").insert([spend]);
 
     if (error) {
-      console.error("Error saving spend:", error.message);
+      console.error("Error saving Loan/Debt:", error.message);
       alert("Failed to save transaction ❌");
     } else {
-      alert("Spending recorded ✅");
+      alert("Loan/Debt recorded ✅");
       onClose();
     }
 

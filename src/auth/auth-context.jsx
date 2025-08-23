@@ -45,7 +45,7 @@ export const AuthProvider = ({ children }) => {
     });
 
     if (error) throw error;
-    return data; // this redirects user automatically
+    return data;
   };
 
   // Sign in (email/password)

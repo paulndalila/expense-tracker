@@ -25,10 +25,10 @@ const IncomeFormModal = ({ onClose }) => {
     const { error } = await supabase.from("transactions").insert([spend]);
 
     if (error) {
-      console.error("Error saving spend:", error.message);
+      console.error("Error saving income:", error.message);
       alert("Failed to save transaction ❌");
     } else {
-      alert("Spending recorded ✅");
+      alert("Income recorded ✅");
       onClose();
     }
     setLoading(false);
