@@ -1,0 +1,13 @@
+# robots.txt for Expense Tracker
+
+User-agent: *
+
+# Allowing indexing of these public pages
+Allow: /login
+Allow: /register
+
+# Block private/authenticated areas
+Disallow: /
+
+# Sitemap
+Sitemap: https://et.paulndalila.top/sitemap.xml
