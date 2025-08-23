@@ -1,25 +1,21 @@
 import Inputs from "../components/Inputs";
+import Recents from "../components/Recents";
 import DailyUse from "../components/DailyUse";
 import NetWorth from "../components/NetWorth";
-import MonthlyUse from "../components/MonthlyUse";
-import Recents from "../components/Recents";
 import { useAuth } from "../auth/auth-context";
+import MonthlyUse from "../components/MonthlyUse";
 import TopSpendings from "../components/TopSpendings";
-import { useEffect } from "react";
 
 const Home = () => {
   const { user } = useAuth();
 
-  // useEffect(() => {
-  //   console.log(user.email);
-  // }, [user]);
   return (
     <div className="min-h-screen md:h-screen flex items-center w-full md:max-w-7xl mx-auto py-2">
       <div className="w-full h-full flex flex-col md:flex-row gap-4">
         {/* Greetings */}
         <div className="flex flex-col gap-1 px-2 md:hidden">
           <h1 className="ps-1 text-lg text-gray-800 w-full font-bold">
-            Hello {user?.email}!
+            Hello {user?.user_metadata.full_name}!
           </h1>
           <div className="w-full flex items-center justify-center">
             <Inputs />
@@ -33,21 +29,21 @@ const Home = () => {
           <MonthlyUse />
         </div>
 
-        <div className="w-full md:w-6/8 h-[90vh] flex flex-col bg-white rounded-lg py-4 px-6 shadow-lg">
+        <div className="w-full md:w-6/8 h-[100vh] md:h-[90vh] flex flex-col bg-white rounded-lg py-4 px-6 shadow-lg">
           {/* Greetings */}
           <div className="hidden md:flex items-center justify-between">
             <h1 className="text-2xl">
-              Greetings, <strong>{user?.email}!</strong>
+              Greetings, <strong>{user?.user_metadata.full_name}!</strong>
             </h1>
             <Inputs />
           </div>
 
           {/* Transactions */}
           <div className="flex flex-col md:flex-row flex-1 gap-6 w-full overflow-hidden mt-2">
-            <div className="w-full md:w-2/6 h-full overflow-hidden overflow-y-auto">
+            <div className="w-full md:w-2/6 h-1/2 md:h-full overflow-hidden overflow-y-auto lin">
               <Recents />
             </div>
-            <div className="w-full md:w-4/6 flex-1 overflow-hidden overflow-y-auto">
+            <div className="w-full md:w-4/6 h-1/2 md:h-full overflow-hidden overflow-y-auto">
               <TopSpendings />
             </div>
           </div>

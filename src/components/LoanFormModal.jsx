@@ -1,18 +1,38 @@
+import { supabase } from "../auth/supabaseClient.js";
+import { useAuth } from "../auth/auth-context.jsx";
+import { useState } from "react";
+import CircularProgress from "@mui/material/CircularProgress";
+
 const LoanFormModal = ({ onClose }) => {
-  const handleSubmit = (e) => {
+  const { user } = useAuth();
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const data = new FormData(e.target);
-    const loan = {
-      amount: data.get("amount"),
-      type: data.get("type"), // Loan or Debt
-      lender: data.get("lender"),
-      description: data.get("description"),
-      date: data.get("date"),
-      dueDate: data.get("dueDate"),
-      method: data.get("method"),
+
+    const spend = {
+      user_id: user.id,
+      amount: parseFloat(data.get("amount")),
+      description: data.get("description") || null,
+      transaction_date: data.get("date"),
+      type: data.get("type"),
+      item: data.get("lender"),
+      paid_in: data.get("method"),
     };
-    console.log("Loan/Debt recorded:", loan);
-    onClose();
+
+    const { error } = await supabase.from("transactions").insert([spend]);
+
+    if (error) {
+      console.error("Error saving spend:", error.message);
+      alert("Failed to save transaction ❌");
+    } else {
+      alert("Spending recorded ✅");
+      onClose();
+    }
+
+    setLoading(false);
   };
 
   return (
@@ -27,19 +47,19 @@ const LoanFormModal = ({ onClose }) => {
             type="number"
             name="amount"
             placeholder="Amount (Ksh)"
-            className="border rounded-md p-2 text-sm focus:ring-2 focus:ring-indigo-400"
+            className="border-1 border-gray-300 rounded-sm p-2 text-sm focus:ring-2 focus:ring-indigo-400"
             required
           />
 
           {/* Loan or Debt */}
           <select
             name="type"
-            className="border rounded-md p-2 text-sm focus:ring-2 focus:ring-indigo-400"
+            className="border-1 border-gray-300 rounded-sm p-2 text-sm focus:ring-2 focus:ring-indigo-400"
             required
           >
             <option value="">Select Type</option>
-            <option>Loan (I borrowed)</option>
-            <option>Debt (I lent out)</option>
+            <option value="loan">Loan (I borrowed)</option>
+            <option value="debt_repayment">Debt (I lent out)</option>
           </select>
 
           {/* Lender / Borrower */}
@@ -47,7 +67,7 @@ const LoanFormModal = ({ onClose }) => {
             type="text"
             name="lender"
             placeholder="Lender/Borrower Name"
-            className="border rounded-md p-2 text-sm focus:ring-2 focus:ring-indigo-400"
+            className="border-1 border-gray-300 rounded-sm p-2 text-sm focus:ring-2 focus:ring-indigo-400"
             required
           />
 
@@ -56,7 +76,7 @@ const LoanFormModal = ({ onClose }) => {
             type="text"
             name="description"
             placeholder="Description (optional)"
-            className="border rounded-md p-2 text-sm focus:ring-2 focus:ring-indigo-400"
+            className="border-1 border-gray-300 rounded-sm p-2 text-sm focus:ring-2 focus:ring-indigo-400"
           />
 
           <div className="flex flex-col">
@@ -69,33 +89,21 @@ const LoanFormModal = ({ onClose }) => {
               name="date"
               id="borrowed_date"
               defaultValue={new Date().toISOString().split("T")[0]}
-              className="border rounded-md p-2 text-sm focus:ring-2 focus:ring-indigo-400"
-            />
-          </div>
-
-          <div className="flex flex-col">
-            {/* Due Date */}
-            <label htmlFor="due_date" className="text-xs">
-              Due date
-            </label>
-            <input
-              type="date"
-              name="dueDate"
-              id="due_date"
-              className="border rounded-md p-2 text-sm focus:ring-2 focus:ring-indigo-400"
+              className="border-1 border-gray-300 rounded-sm p-2 text-sm focus:ring-2 focus:ring-indigo-400"
             />
           </div>
 
           {/* Payment Method */}
           <select
             name="method"
-            className="border rounded-md p-2 text-sm focus:ring-2 focus:ring-indigo-400"
+            className="border-1 border-gray-300 rounded-sm p-2 text-sm focus:ring-2 focus:ring-indigo-400"
           >
             <option value="">Payment Method</option>
-            <option>Cash</option>
-            <option>MPesa</option>
-            <option>Bank</option>
-            <option>Card</option>
+            <option value="cash">Cash</option>
+            <option value="mpesa">MPesa</option>
+            <option value="bank">Bank</option>
+            <option value="card">Card</option>
+            <option value="other">Other</option>
           </select>
 
           {/* Buttons */}
@@ -103,15 +111,23 @@ const LoanFormModal = ({ onClose }) => {
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-sm rounded-md border border-gray-300 hover:bg-gray-100"
+              className="px-4 py-2 text-sm rounded-md border border-gray-300 hover:bg-gray-100 cursor-pointer"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-4 py-2 text-sm rounded-md bg-indigo-500 text-white hover:bg-indigo-600"
+              className="px-4 py-2 text-sm rounded-md bg-indigo-500 text-white hover:bg-indigo-600 cursor-pointer"
             >
-              Save
+              {loading ? (
+                <CircularProgress
+                  size={14}
+                  thickness={8}
+                  sx={{ color: "white" }}
+                />
+              ) : (
+                <span>Save</span>
+              )}
             </button>
           </div>
         </form>

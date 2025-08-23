@@ -1,16 +1,42 @@
+import { useState } from "react";
+import TextField from "@mui/material/TextField";
+import { useAuth } from "../auth/auth-context.jsx";
+import { supabase } from "../auth/supabaseClient.js";
+import Autocomplete from "@mui/material/Autocomplete";
+import CircularProgress from "@mui/material/CircularProgress";
+
+const commonItems = ["Fare", "Rent", "Food", "Shopping", "Bills", "Other"];
+
 const SpendFormModal = ({ onClose }) => {
-  const handleSubmit = (e) => {
+  const { user } = useAuth();
+  const [item, setItem] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const data = new FormData(e.target);
+
     const spend = {
-      amount: data.get("amount"),
-      category: data.get("category"),
-      description: data.get("description"),
-      date: data.get("date"),
-      method: data.get("method"),
+      user_id: user.id,
+      amount: parseFloat(data.get("amount")),
+      description: data.get("description") || null,
+      transaction_date: data.get("date"),
+      type: "expense",
+      item: data.get("item"),
+      paid_in: data.get("method"),
     };
-    console.log("Spend recorded:", spend);
-    onClose();
+
+    const { error } = await supabase.from("transactions").insert([spend]);
+
+    if (error) {
+      console.error("Error saving spend:", error.message);
+      alert("Failed to save transaction ❌");
+    } else {
+      alert("Spending recorded ✅");
+      onClose();
+    }
+    setLoading(false);
   };
 
   return (
@@ -24,57 +50,77 @@ const SpendFormModal = ({ onClose }) => {
             type="number"
             name="amount"
             placeholder="Amount (Ksh)"
-            className="border rounded-md p-2 text-sm focus:ring-2 focus:ring-red-400"
+            className="border-1 border-gray-300 rounded-sm p-2 text-sm focus:ring-2 focus:ring-red-400"
             required
           />
-          <select
-            name="category"
+          {/* <input
+            type="text"
+            name="item"
+            placeholder="e.g fare"
             className="border rounded-md p-2 text-sm focus:ring-2 focus:ring-red-400"
             required
-          >
-            <option value="">Select Category</option>
-            <option>Food</option>
-            <option>Transport</option>
-            <option>Bills</option>
-            <option>Shopping</option>
-            <option>Other</option>
-          </select>
+          /> */}
+          {/* Autocomplete Input for Item */}
+          <Autocomplete
+            freeSolo
+            options={commonItems}
+            onInputChange={(e, newValue) => setItem(newValue)}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                name="item"
+                label="Item"
+                placeholder="e.g. Fare"
+                size="small"
+                required
+              />
+            )}
+          />
           <input
             type="text"
             name="description"
             placeholder="Description (optional)"
-            className="border rounded-md p-2 text-sm focus:ring-2 focus:ring-red-400"
+            className="border-1 border-gray-300 rounded-sm p-2 text-sm focus:ring-2 focus:ring-red-400"
           />
           <input
             type="date"
             name="date"
             defaultValue={new Date().toISOString().split("T")[0]}
-            className="border rounded-md p-2 text-sm focus:ring-2 focus:ring-red-400"
+            className="border-1 border-gray-300 rounded-sm p-2 text-sm focus:ring-2 focus:ring-red-400"
           />
           <select
             name="method"
-            className="border rounded-md p-2 text-sm focus:ring-2 focus:ring-red-400"
+            className="border-1 border-gray-300 rounded-sm p-2 text-sm focus:ring-2 focus:ring-red-400"
           >
             <option value="">Payment Method</option>
-            <option>Cash</option>
-            <option>MPesa</option>
-            <option>Bank</option>
-            <option>Card</option>
+            <option value="cash">Cash</option>
+            <option value="mpesa">MPesa</option>
+            <option value="bank">Bank</option>
+            <option value="card">Card</option>
+            <option value="other">Other</option>
           </select>
 
           <div className="flex justify-end gap-2 mt-4">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-sm rounded-md border border-gray-300 hover:bg-gray-100"
+              className="px-4 py-2 text-sm rounded-md border border-gray-300 hover:bg-gray-100 cursor-pointer"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-4 py-2 text-sm rounded-md bg-red-500 text-white hover:bg-red-600"
+              className="px-4 py-2 text-sm rounded-md bg-red-500 text-white hover:bg-red-600 cursor-pointer"
             >
-              Save
+              {loading ? (
+                <CircularProgress
+                  size={14}
+                  thickness={8}
+                  sx={{ color: "white" }}
+                />
+              ) : (
+                <span>Save</span>
+              )}
             </button>
           </div>
         </form>
