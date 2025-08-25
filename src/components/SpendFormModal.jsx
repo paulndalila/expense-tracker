@@ -35,6 +35,7 @@ const SpendFormModal = ({ onClose }) => {
     } else {
       alert("Spending recorded ✅");
       onClose();
+      window.location.href = "/";
     }
     setLoading(false);
   };

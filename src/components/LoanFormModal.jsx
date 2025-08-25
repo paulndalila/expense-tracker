@@ -30,6 +30,7 @@ const LoanFormModal = ({ onClose }) => {
     } else {
       alert("Loan/Debt recorded ✅");
       onClose();
+      window.location.href = "/";
     }
 
     setLoading(false);

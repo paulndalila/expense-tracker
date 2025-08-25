@@ -30,6 +30,7 @@ const IncomeFormModal = ({ onClose }) => {
     } else {
       alert("Income recorded ✅");
       onClose();
+      window.location.href = "/";
     }
     setLoading(false);
   };
