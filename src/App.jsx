@@ -9,15 +9,17 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Register from "./pages/Register";
 import CheckYourMail from "./pages/CheckYourMail";
 import Error from "./pages/Error";
+import Loader from "./components/Loader";
 
 function App() {
   const { isAuthenticated, loading } = useAuth();
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Loader />;
   return (
     <Router>
       <Routes>
         <Route path="*" element={<Error />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/loader" element={<Loader />} />
         <Route path="/register" element={<Register />} />
         <Route path="/mail" element={<CheckYourMail />} />
         <Route
